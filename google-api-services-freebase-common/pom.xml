@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<name>Google Freebase Client API Common</name>
+	
+	<parent>
+		<groupId>org.bwgz.freebase</groupId>
+		<artifactId>freebase</artifactId>
+		<version>1.0.0-BETA</version>
+		<relativePath>..</relativePath>
+	</parent>
+	
+	<artifactId>google-api-services-freebase-common</artifactId>
+	<packaging>jar</packaging>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.bwgz.freebase</groupId>
+			<artifactId>google-api-services-freebase</artifactId>
+			<version>1.0.0-BETA</version>
+		</dependency>
+	    <dependency>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client-jackson2</artifactId>
+			<version>${google-http-client-jackson2-version}</version>
+			<scope>test</scope>
+	    </dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

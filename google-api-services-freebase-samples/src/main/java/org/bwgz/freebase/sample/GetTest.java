@@ -27,6 +27,8 @@ import com.google.api.services.freebase.Freebase;
 import com.google.api.services.freebase.model.ContentserviceGet;
 
 public class GetTest {
+	static private final String applicationName = GetTest.class.getName();
+
 	public static void main(String[] args) {
 	    HttpTransport httpTransport = new NetHttpTransport();
 	    JsonFactory jsonFactory = new JacksonFactory();
@@ -38,11 +40,13 @@ public class GetTest {
 	    };
 	    
 	    Freebase.Builder fbb = new  Freebase.Builder(httpTransport, jsonFactory, httpRequestInitializer);
+	    fbb.setApplicationName(applicationName);
 	    Freebase freebase = fbb.build();
 	    ArrayList<String> list = new ArrayList<String>();
 	    try {
 	        list.add("/m/0jcx");
 	        Freebase.Text.Get text = freebase.text().get(list);
+	        text.set("maxlength", Long.valueOf(8000));
 	        ContentserviceGet get = text.execute();
 	        System.out.println(get.toPrettyString());
 	    } catch (Exception e) {

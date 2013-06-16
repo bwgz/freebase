@@ -29,6 +29,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.freebase.Freebase;
 
 public class MQLReadTest {
+	static private final String applicationName = MQLReadTest.class.getName();
 	static private final String query = 
 			"{\"type\":\"/people/person\",\"id\":\"/en/albert_einstein\",\"children\":[]}";
 
@@ -45,7 +46,7 @@ public class MQLReadTest {
 		}
 	}
 	
-	public static class SingleMQLReadPersonResponse extends GenericJson {
+	public static class MQLReadPersonResponse extends GenericJson {
 		@com.google.api.client.util.Key
 		private Person result;
 		
@@ -58,7 +59,7 @@ public class MQLReadTest {
 		}
 	}
 
-	public static class SingleMQLReadResponse<T> extends GenericJson {
+	public static class MQLReadResponse<T> extends GenericJson {
 		@com.google.api.client.util.Key
 		private T result;
 		
@@ -72,6 +73,7 @@ public class MQLReadTest {
 	}
 	
 	public static void GenericJsonTest(Freebase freebase) {
+        System.out.println("***** GenericJsonTest");
 	    try {
 	        Freebase.Mqlread<GenericJson> mqlRead = freebase.mqlread(query, GenericJson.class);
 	        GenericJson response = mqlRead.execute();
@@ -79,12 +81,14 @@ public class MQLReadTest {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    } 
+        System.out.println("******************************");
 	}
 	
 	public static void SingleResponseTest1(Freebase freebase) {
+        System.out.println("SingleResponseTest1");
 	    try {
-	        Freebase.Mqlread<SingleMQLReadPersonResponse> mqlRead = freebase.mqlread(query, SingleMQLReadPersonResponse.class);
-	        SingleMQLReadPersonResponse response = mqlRead.execute();
+	        Freebase.Mqlread<MQLReadPersonResponse> mqlRead = freebase.mqlread(query, MQLReadPersonResponse.class);
+	        MQLReadPersonResponse response = mqlRead.execute();
 	        System.out.println(response.toPrettyString());
 	        Person person = response.getResult();
 	        System.out.println(person);
@@ -94,12 +98,14 @@ public class MQLReadTest {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    } 
+        System.out.println("******************************");
 	}
 
 	public static void SingleResponseTest2(Freebase freebase) {
+        System.out.println("***** SingleResponseTest2 - This will fail.");
 	    try {
-	        Freebase.Mqlread<SingleMQLReadResponse<Person>> mqlRead = freebase.mqlread(query, SingleMQLReadResponse.class);
-	        SingleMQLReadResponse<Person> response = mqlRead.execute();
+	        Freebase.Mqlread<MQLReadResponse<Person>> mqlRead = freebase.mqlread(query, MQLReadResponse.class);
+	        MQLReadResponse<Person> response = mqlRead.execute();
 	        System.out.println(response.toPrettyString());
 	        
 	        // This will fail.
@@ -111,13 +117,15 @@ public class MQLReadTest {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    } 
+        System.out.println("******************************");
 	}
 
 	public static void SingleResponseTest3(Freebase freebase) {
+        System.out.println("SingleResponseTest3");
 	    try {
-	    	Type type = ParameterizedTypeImpl.make(SingleMQLReadResponse.class, new Type[] { Person.class }, null);
-	        Freebase.Mqlread<SingleMQLReadResponse<Person>> mqlRead = freebase.mqlread(query, SingleMQLReadResponse.class, type);
-	        SingleMQLReadResponse<Person> response = mqlRead.execute();
+	    	Type type = ParameterizedTypeImpl.make(MQLReadResponse.class, new Type[] { Person.class }, null);
+	        Freebase.Mqlread<MQLReadResponse<Person>> mqlRead = freebase.mqlread(query, MQLReadResponse.class, type);
+	        MQLReadResponse<Person> response = mqlRead.execute();
 	        System.out.println(response.toPrettyString());
 	        Person person = response.getResult();
 	        System.out.println(person);
@@ -127,6 +135,7 @@ public class MQLReadTest {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    } 
+        System.out.println("******************************");
 	}
 
 	public static void main(String[] args) {
@@ -140,6 +149,7 @@ public class MQLReadTest {
 	    };
 	    
 	    Freebase.Builder fbb = new  Freebase.Builder(httpTransport, jsonFactory, httpRequestInitializer);
+	    fbb.setApplicationName(applicationName);
 	    Freebase freebase = fbb.build();
 	    
 	    GenericJsonTest(freebase);

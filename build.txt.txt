@@ -1,0 +1,5 @@
+mvn versions:set -DnewVersion=0.9.0-SNAPSHOT
+mvn source:jar install
+mvn -Dmaven.test.skip=true install
+
+mvn -Dmaven.test.skip=true clean generate-sources source:jar install

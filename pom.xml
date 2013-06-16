@@ -7,16 +7,23 @@
 	
 	<groupId>org.bwgz.freebase</groupId>
 	<artifactId>freebase</artifactId>
-	<version>1.0</version>
+	<version>1.0.0-BETA</version>
 	<packaging>pom</packaging>
 	
 	<modules>
 		<module>google-api-services-freebase</module>
+		<module>google-api-services-freebase-common</module>
+		<module>google-api-services-freebase-samples</module>
 	</modules>
 	
 	<properties>
 		<maven-eclipse-plugin-version>2.9</maven-eclipse-plugin-version>
+		
 		<java-version>1.6</java-version>
+		
+		<google-http-client-jackson2-version>1.14.1-beta</google-http-client-jackson2-version>
+		<google-api-client-version>1.14.1-beta</google-api-client-version>
+		<google-guava-version>14.0.1</google-guava-version>
 	</properties>
 	
     <licenses>
@@ -26,6 +33,14 @@
 			<distribution>repo</distribution>
 		</license>
     </licenses>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>${google-api-client-version}</version>
+		</dependency>
+	</dependencies>
 
 	<build>
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -40,9 +55,25 @@
 					</configuration>
 				</plugin>
 				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>2.0</version>
+					<configuration>
+						<allowSnapshots>true</allowSnapshots>
+					</configuration>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-archetype-plugin</artifactId>
-					<version>2.2</version>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.2.1</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar-no-fork</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -51,10 +82,16 @@
 					<configuration>
 						<downloadSources>true</downloadSources>
 						<downloadJavadocs>true</downloadJavadocs>
-						<wtpversion>2.0</wtpversion>
 					</configuration>
 				</plugin>			
             </plugins>
         </pluginManagement>
     </build>
+
+	<repositories>
+		<repository>
+			<id>google-api-services</id>
+			<url>http://google-api-client-libraries.appspot.com/mavenrepo</url>
+		</repository>
+	</repositories>
 </project>
