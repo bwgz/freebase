@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 bwgz.org
+ * Copyright (C) 2014 bwgz.org
  * 
  * This program is free software for use, reproduction, and distribution
  * under the terms of the:
@@ -15,9 +15,6 @@
 package org.bwgz.freebase.sample;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
@@ -75,7 +72,7 @@ public class MQLReadTest {
 	public static void GenericJsonTest(Freebase freebase) {
         System.out.println("***** GenericJsonTest");
 	    try {
-	        Freebase.Mqlread<GenericJson> mqlRead = freebase.mqlread(query, GenericJson.class);
+	        Freebase.Mqlread mqlRead = freebase.mqlread(query);
 	        GenericJson response = mqlRead.execute();
 	        System.out.println(response.toPrettyString());
 	    } catch (Exception e) {
@@ -84,60 +81,6 @@ public class MQLReadTest {
         System.out.println("******************************");
 	}
 	
-	public static void SingleResponseTest1(Freebase freebase) {
-        System.out.println("SingleResponseTest1");
-	    try {
-	        Freebase.Mqlread<MQLReadPersonResponse> mqlRead = freebase.mqlread(query, MQLReadPersonResponse.class);
-	        MQLReadPersonResponse response = mqlRead.execute();
-	        System.out.println(response.toPrettyString());
-	        Person person = response.getResult();
-	        System.out.println(person);
-	        for (String child : person.getChildren()) {
-		        System.out.println(child);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } 
-        System.out.println("******************************");
-	}
-
-	public static void SingleResponseTest2(Freebase freebase) {
-        System.out.println("***** SingleResponseTest2 - This will fail.");
-	    try {
-	        Freebase.Mqlread<MQLReadResponse<Person>> mqlRead = freebase.mqlread(query, MQLReadResponse.class);
-	        MQLReadResponse<Person> response = mqlRead.execute();
-	        System.out.println(response.toPrettyString());
-	        
-	        // This will fail.
-	        Person person = response.getResult();
-	        System.out.println(person);
-	        for (String child : person.getChildren()) {
-		        System.out.println(child);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } 
-        System.out.println("******************************");
-	}
-
-	public static void SingleResponseTest3(Freebase freebase) {
-        System.out.println("SingleResponseTest3");
-	    try {
-	    	Type type = ParameterizedTypeImpl.make(MQLReadResponse.class, new Type[] { Person.class }, null);
-	        Freebase.Mqlread<MQLReadResponse<Person>> mqlRead = freebase.mqlread(query, MQLReadResponse.class, type);
-	        MQLReadResponse<Person> response = mqlRead.execute();
-	        System.out.println(response.toPrettyString());
-	        Person person = response.getResult();
-	        System.out.println(person);
-	        for (String child : person.getChildren()) {
-		        System.out.println(child);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } 
-        System.out.println("******************************");
-	}
-
 	public static void main(String[] args) {
 	    HttpTransport httpTransport = new NetHttpTransport();
 	    JsonFactory jsonFactory = new JacksonFactory();
@@ -153,8 +96,5 @@ public class MQLReadTest {
 	    Freebase freebase = fbb.build();
 	    
 	    GenericJsonTest(freebase);
-	    SingleResponseTest1(freebase);
-	    SingleResponseTest2(freebase);
-	    SingleResponseTest3(freebase);
 	}
 }

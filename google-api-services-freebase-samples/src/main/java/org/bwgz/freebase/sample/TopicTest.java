@@ -15,8 +15,9 @@
 package org.bwgz.freebase.sample;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
@@ -27,17 +28,13 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.freebase.Freebase;
 import com.google.api.services.freebase.model.TopicLookup;
 import com.google.api.services.freebase.model.TopicLookup.Property;
-import com.google.api.services.freebase.model.TopicPropertyvalue;
-import com.google.api.services.freebase.model.TopicValue;
 
 public class TopicTest {
 	static private final String applicationName = TopicTest.class.getName();
 
 	public static void test1(Freebase freebase) {
-	    ArrayList<String> list = new ArrayList<String>();
 	    try {
-	        list.add("/m/0jcx");
-	        Freebase.Topic.Lookup lookup = freebase.topic().lookup(list);
+	        Freebase.Topic.Lookup lookup = freebase.topic().lookup(Arrays.asList("/m/0jcx"));
 	        TopicLookup topic = lookup.execute();
 	        System.out.println(topic.toPrettyString());
 	    } catch (Exception e) {
@@ -46,18 +43,16 @@ public class TopicTest {
 	}
 	
 	public static void test2(Freebase freebase) {
-	    ArrayList<String> list = new ArrayList<String>();
 	    try {
-	        list.add("/m/081k8"); // William Shakespeare
-	        Freebase.Topic.Lookup lookup = freebase.topic().lookup(list);
+	        Freebase.Topic.Lookup lookup = freebase.topic().lookup(Arrays.asList("/m/081k8"));
 	        lookup.setFilter(Arrays.asList(new String[] { "/common/topic/description" }));
 	        TopicLookup topic = lookup.execute();
 	        System.out.println(topic.toPrettyString());
 	        
 			Property property = topic.getProperty();
-			TopicPropertyvalue tpv = property.get("/common/topic/description");
-			System.out.printf("value type: %s\n", tpv.getValuetype());
-			for (TopicValue value: tpv.getValues()) {
+			Map<String, ?> tpv = (Map<String, ?>) property.get("/common/topic/description");
+			List<Map<String, ?>> values = (List<Map<String, ?>>) tpv.get("values");
+			for (Map<String, ?> value : values) {
 				for (String key : value.keySet()) {
 					System.out.printf("\t %s: %s\n", key, value.get(key).toString());
 				}
