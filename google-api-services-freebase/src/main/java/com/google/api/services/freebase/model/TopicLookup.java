@@ -20,6 +20,8 @@
 
 package com.google.api.services.freebase.model;
 
+import com.google.api.client.util.ArrayMap;
+
 /**
  * Model definition for TopicLookup.
  *
@@ -85,41 +87,10 @@ public final class TopicLookup extends com.google.api.client.json.GenericJson {
     return (TopicLookup) super.clone();
   }
 
+  
   /**
    * Model definition for TopicLookupProperty.
    */
-  public static final class Property extends com.google.api.client.json.GenericJson {
-
-    /**
-     * The value may be {@code null}.
-     */
-    @com.google.api.client.util.Key("/freebase/object_profile/linkcount")
-    private TopicStatslinkcount freebaseObjectProfileLinkcount;
-
-    /**
-     * @return value or {@code null} for none
-     */
-    public TopicStatslinkcount getFreebaseObjectProfileLinkcount() {
-      return freebaseObjectProfileLinkcount;
-    }
-
-    /**
-     * @param freebaseObjectProfileLinkcount freebaseObjectProfileLinkcount or {@code null} for none
-     */
-    public Property setFreebaseObjectProfileLinkcount(TopicStatslinkcount freebaseObjectProfileLinkcount) {
-      this.freebaseObjectProfileLinkcount = freebaseObjectProfileLinkcount;
-      return this;
-    }
-
-    @Override
-    public Property set(String fieldName, Object value) {
-      return (Property) super.set(fieldName, value);
-    }
-
-    @Override
-    public Property clone() {
-      return (Property) super.clone();
-    }
-
+  public static final class Property extends ArrayMap<String, TopicPropertyValue> {
   }
 }
